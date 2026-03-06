@@ -9,14 +9,23 @@
 // 14/01/2012 || || 500.00 || 2500.00
 // 13/01/2012 || 2000.00 || || 3000.00
 // 10/01/2012 || 1000.00 || || 1000.00
-//
+
+type Screen = { printLn: (line: string) => void }
+
 describe('BankingAccount', () => {
   it('test', () => {
+    const statementRepository = {
+      save:
+    }
     statementRepository.save(DEPOSIT, 1000, "10-01-2012")
     statementRepository.save(DEPOSIT, 2000, "13-01-2012")
     statementRepository.save(WITHDRAWAL, 500, "14-01-2012")
 
-    var account = new BankingAccount();
+    const screen: Screen = {
+      printLn: jest.fn()
+    }
+    var account = new BankingAccount(screen);
+
     account.printStatement();
 
     expect(screen.printLn).toHaveBeenNthCalledWith(1,
