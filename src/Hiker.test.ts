@@ -12,17 +12,31 @@
 
 type Screen = { printLn: (line: string) => void }
 
-type Operation = string
+type StatementRepository = {
+  findAll: () => Statement[]
+}
+type Statement = Deposit | Withdrawal;
+type Deposit = {
+  type: 'DEPOSIT',
+  amount: Amount,
+  date: string
+}
+type Withdrawal = {
+  type: 'WITHDRAWAL',
+  amount: Amount,
+  date: string
+}
+type Amount = number;
 
 describe('BankingAccount', () => {
   it('test', () => {
-    const statementRepository = {
-      save: function (type: Operation, amount: number, date: string) { this.data.push({type, amount, date})},
-      data: []
+    const statementRepository: StatementRepository = {
+      findAll: jest.fn().mockReturnValue([
+        { type: 'DEPOSIT', amount: 1000, date: "10-01-2012" },
+        { type: 'DEPOSIT', amount: 2000, date: "13-01-2012" },
+        { type: 'WITHDRAWAL', amount: 500, date: "14-01-2012" }
+      ])
     }
-    statementRepository.save("DEPOSIT", 1000, "10-01-2012")
-    statementRepository.save("DEPOSIT", 2000, "13-01-2012")
-    statementRepository.save("WITHDRAWAL", 500, "14-01-2012")
 
     const screen: Screen = {
       printLn: jest.fn()
