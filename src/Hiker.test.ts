@@ -12,20 +12,23 @@
 
 type Screen = { printLn: (line: string) => void }
 
+type Operation = string
+
 describe('BankingAccount', () => {
   it('test', () => {
     const statementRepository = {
-      save:
+      save: function (type: Operation, amount: number, date: string) { this.data.push({type, amount, date})},
+      data: []
     }
-    statementRepository.save(DEPOSIT, 1000, "10-01-2012")
-    statementRepository.save(DEPOSIT, 2000, "13-01-2012")
-    statementRepository.save(WITHDRAWAL, 500, "14-01-2012")
+    statementRepository.save("DEPOSIT", 1000, "10-01-2012")
+    statementRepository.save("DEPOSIT", 2000, "13-01-2012")
+    statementRepository.save("WITHDRAWAL", 500, "14-01-2012")
 
     const screen: Screen = {
       printLn: jest.fn()
     }
-    var account = new BankingAccount(screen);
 
+    var account = new BankingAccount(screen, statementRepository);
     account.printStatement();
 
     expect(screen.printLn).toHaveBeenNthCalledWith(1,
