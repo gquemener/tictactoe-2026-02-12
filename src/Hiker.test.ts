@@ -12,22 +12,24 @@
 //
 describe('BankingAccount', () => {
   it('test', () => {
+    statementRepository.save(DEPOSIT, 1000, "10-01-2012")
+    statementRepository.save(DEPOSIT, 2000, "13-01-2012")
+    statementRepository.save(WITHDRAWAL, 500, "14-01-2012")
+
     var account = new BankingAccount();
-    account.deposit(1000, "10-01-2012");
-    account.deposit(2000, "13-01-2012");
-    account.withdrawal(500, "14-01-2012");
     account.printStatement();
+
     expect(screen.printLn).toHaveBeenNthCalledWith(1,
-        "date || credit || debit || balance",
+      "date || credit || debit || balance",
     )
     expect(screen.printLn).toHaveBeenNthCalledWith(2,
-        "14/01/2012 || || 500.00 || 2500.00",
+      "14/01/2012 || || 500.00 || 2500.00",
     )
     expect(screen.printLn).toHaveBeenNthCalledWith(3,
-        "13/01/2012 || 2000.00 || || 3000.00",
+      "13/01/2012 || 2000.00 || || 3000.00",
     )
     expect(screen.printLn).toHaveBeenNthCalledWith(4,
-        "10/01/2012 || 1000.00 || || 1000.00",
+      "10/01/2012 || 1000.00 || || 1000.00",
     )
   })
 })
